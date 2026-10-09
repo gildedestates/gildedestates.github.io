@@ -1,0 +1,14 @@
+{%- comment -%}
+  Closing call-to-action. Copy comes from `cta:` in _data/brokerage.yml;
+  any page can override with params: heading, text, label, url.
+{%- endcomment -%}
+{%- assign cta = site.data.brokerage.cta -%}
+<section class="cta-band">
+  <div class="container cta-band__inner">
+    <div>
+      <h2 class="cta-band__title">{{ include.heading | default: cta.heading }}</h2>
+      <p class="cta-band__text">{{ include.text | default: cta.text }}</p>
+    </div>
+    <a class="btn" href="{{ include.url | default: cta.url | relative_url }}">{{ include.label | default: cta.label }}</a>
+  </div>
+</section>

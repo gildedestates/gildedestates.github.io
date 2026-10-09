@@ -1,0 +1,90 @@
+---
+layout: default
+---
+{%- comment -%}
+  Home page. All copy comes from index.html front matter (hero, value_props,
+  featured, team), _data/testimonials.yml and _data/brokerage.yml.
+  Sections hide themselves when they have nothing to show.
+{%- endcomment -%}
+{%- assign hero = page.hero -%}
+{% include hero.html heading=hero.heading text=hero.text image=hero.image image_alt=hero.image_alt cta_label=hero.cta_label cta_url=hero.cta_url cta2_label=hero.cta2_label cta2_url=hero.cta2_url %}
+
+{%- if page.value_props %}
+<section class="section">
+  <div class="container">
+    <div class="grid grid--3">
+      {%- for item in page.value_props %}
+      <div class="value">
+        <h3>{{ item.title }}</h3>
+        <p>{{ item.text }}</p>
+      </div>
+      {%- endfor %}
+    </div>
+  </div>
+</section>
+{%- endif %}
+
+{%- assign featured_listings = site.listings | where: "featured", true %}
+<section class="section section--tight">
+  <div class="container">
+    <div class="section-head">
+      <h2>{{ page.featured.heading | default: "Featured homes" }}</h2>
+      {%- if featured_listings.size > 0 %}
+      <a class="link-more" href="{{ '/listings/' | relative_url }}">View all listings</a>
+      {%- endif %}
+    </div>
+    {%- if featured_listings.size > 0 %}
+    <div class="grid grid--cards">
+      {%- for listing in featured_listings limit: 3 %}
+      {% include listing-card.html listing=listing %}
+      {%- endfor %}
+    </div>
+    {%- else %}
+    {%- comment %} Shown until at least one listing has `featured: true`. {% endcomment %}
+    <div class="empty">
+      <h3>{{ page.featured.empty_heading }}</h3>
+      <p>{{ page.featured.empty_text }}</p>
+      <a class="btn btn--ghost" href="{{ page.featured.empty_url | default: '/contact/' | relative_url }}">{{ page.featured.empty_label | default: "Get in touch" }}</a>
+    </div>
+    {%- endif %}
+  </div>
+</section>
+
+{%- assign team = site.agents | sort: "order" %}
+{%- if team.size > 0 %}
+<section class="section">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <h2>{{ page.team.heading | default: "Meet the team" }}</h2>
+        {%- if page.team.text %}<p>{{ page.team.text }}</p>{% endif %}
+      </div>
+      <a class="link-more" href="{{ '/agents/' | relative_url }}">Everyone on the team</a>
+    </div>
+    <div class="grid grid--team">
+      {%- for agent in team limit: 3 %}
+      {% include agent-card.html agent=agent %}
+      {%- endfor %}
+    </div>
+  </div>
+</section>
+{%- endif %}
+
+{%- if site.data.testimonials.size > 0 %}
+<section class="section section--tight">
+  <div class="container">
+    <div class="grid grid--3">
+      {%- for item in site.data.testimonials limit: 3 %}
+      <blockquote class="quote">
+        <p>{{ item.quote }}</p>
+        <footer>{{ item.name }}{% if item.detail %}, {{ item.detail }}{% endif %}</footer>
+      </blockquote>
+      {%- endfor %}
+    </div>
+  </div>
+</section>
+{%- endif %}
+
+{{ content }}
+
+{% include cta-band.html %}

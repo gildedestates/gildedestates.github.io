@@ -1,0 +1,15 @@
+{%- comment -%}
+  Formats an integer with thousands separators: 4250000 -> 4,250,000.
+  Params: value, prefix (optional, e.g. "$"). Supports values up to 999,999,999.
+{%- endcomment -%}
+{%- assign num_str = include.value | plus: 0 | append: "" -%}
+{%- assign num_len = num_str | size -%}
+{%- if num_len > 6 -%}
+  {%- assign num_head = num_len | minus: 6 -%}
+  {{- include.prefix }}{{ num_str | slice: 0, num_head }},{{ num_str | slice: num_head, 3 }},{{ num_str | slice: -3, 3 -}}
+{%- elsif num_len > 3 -%}
+  {%- assign num_head = num_len | minus: 3 -%}
+  {{- include.prefix }}{{ num_str | slice: 0, num_head }},{{ num_str | slice: -3, 3 -}}
+{%- else -%}
+  {{- include.prefix }}{{ num_str -}}
+{%- endif -%}

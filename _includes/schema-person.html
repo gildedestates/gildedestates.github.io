@@ -1,0 +1,56 @@
+{%- comment -%}
+  schema.org Person for an agent page. Included by _layouts/agent.html and
+  reads the current page's front matter. Optional fields are only emitted when
+  present, and each starts with a comma, so the JSON is always valid.
+{%- endcomment -%}
+{%- assign sp_brokerage = site.data.brokerage -%}
+{%- assign sp_photo = page.photo | default: "" -%}
+{%- if sp_photo == "" -%}
+  {%- assign sp_photo_url = "" -%}
+{%- elsif sp_photo contains "://" -%}
+  {%- assign sp_photo_url = sp_photo -%}
+{%- else -%}
+  {%- assign sp_photo_url = sp_photo | absolute_url -%}
+{%- endif -%}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "@id": {{ page.url | absolute_url | append: '#person' | jsonify }},
+  "name": {{ page.title | jsonify }},
+  "url": {{ page.url | absolute_url | jsonify }},
+  "worksFor": {
+    "@type": "RealEstateAgent",
+    "@id": {{ '/#brokerage' | absolute_url | jsonify }},
+    "name": {{ sp_brokerage.legal_name | default: site.title | jsonify }}
+  }
+  {%- if page.role and page.role != "" %},
+  "jobTitle": {{ page.role | jsonify }}
+  {%- endif %}
+  {%- if page.description and page.description != "" %},
+  "description": {{ page.description | jsonify }}
+  {%- endif %}
+  {%- if sp_photo_url != "" %},
+  "image": {{ sp_photo_url | jsonify }}
+  {%- endif %}
+  {%- if page.email and page.email != "" %},
+  "email": {{ page.email | jsonify }}
+  {%- endif %}
+  {%- if page.phone and page.phone != "" %},
+  "telephone": {{ page.phone | jsonify }}
+  {%- endif %}
+  {%- if page.dre and page.dre != "" %},
+  "identifier": {
+    "@type": "PropertyValue",
+    "propertyID": "California DRE license",
+    "value": {{ page.dre | jsonify }}
+  }
+  {%- endif %}
+  {%- if page.regions and page.regions.size > 0 %},
+  "areaServed": {{ page.regions | jsonify }}
+  {%- endif %}
+  {%- if page.social and page.social.size > 0 %},
+  "sameAs": [{% for link in page.social %}{{ link.url | jsonify }}{% unless forloop.last %}, {% endunless %}{% endfor %}]
+  {%- endif %}
+}
+</script>

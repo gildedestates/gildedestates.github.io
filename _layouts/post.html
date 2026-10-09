@@ -1,0 +1,19 @@
+---
+layout: default
+---
+{%- comment -%}
+  Blog / market-update post. Optional front matter: agent (slug of the author
+  in _agents), description (for meta tags + the index), image (social card).
+{%- endcomment -%}
+{%- assign post_agent = site.agents | where_exp: "item", "item.slug == page.agent" | first -%}
+<article class="container container--narrow section">
+  <header class="mt-0">
+    <p class="label"><time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: "%B %-d, %Y" }}</time>
+      {%- if post_agent %}, by <a href="{{ post_agent.url | relative_url }}">{{ post_agent.title }}</a>{% endif %}</p>
+    <h1>{{ page.title }}</h1>
+  </header>
+  <div class="prose">
+    {{ content }}
+  </div>
+</article>
+{% include cta-band.html %}

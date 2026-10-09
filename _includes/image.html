@@ -1,0 +1,17 @@
+{%- comment -%}
+  The one place every <img> is written, so lazy-loading, size hints and
+  placeholders behave the same everywhere.
+
+  Params:
+    src       image path or full URL. Empty -> /assets/img/placeholder-<fallback>.svg
+    alt       alt text ("" for purely decorative images)
+    width, height   intrinsic size; reserves space so the page doesn't jump
+    eager     true for above-the-fold images, otherwise lazy-loaded
+    fallback  portrait | landscape | panorama
+{%- endcomment -%}
+{%- assign img_src = include.src -%}
+{%- unless img_src and img_src != "" -%}
+  {%- assign img_fallback = include.fallback | default: "landscape" -%}
+  {%- assign img_src = "/assets/img/placeholder-" | append: img_fallback | append: ".svg" -%}
+{%- endunless -%}
+<img src="{% if img_src contains '://' %}{{ img_src }}{% else %}{{ img_src | relative_url }}{% endif %}" alt="{{ include.alt | escape }}" width="{{ include.width | default: 1200 }}" height="{{ include.height | default: 800 }}" {% if include.eager %}fetchpriority="high"{% else %}loading="lazy"{% endif %} decoding="async">
