@@ -1,0 +1,16 @@
+{%- comment -%} Param: agent (a document from site.agents). {%- endcomment -%}
+{%- assign ac = include.agent -%}
+<article class="card">
+  <a class="card__link" href="{{ ac.url | relative_url }}">
+    <div class="card__media card__media--portrait">
+      {% include image.html src=ac.photo alt=ac.title fallback="portrait" width=640 height=800 %}
+    </div>
+    <div class="card__body">
+      <h3 class="card__title">{{ ac.title }}</h3>
+      <p class="card__meta">{{ ac.role }}</p>
+      {%- if ac.regions %}
+      <p class="card__meta">{{ ac.regions | join: ", " }}</p>
+      {%- endif %}
+    </div>
+  </a>
+</article>

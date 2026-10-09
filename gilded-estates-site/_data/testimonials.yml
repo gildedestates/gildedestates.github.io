@@ -1,0 +1,8 @@
+# Client testimonials. The home-page section stays hidden while this list is empty.
+# Only publish real, permissioned testimonials.
+#
+# Format:
+#  - quote: "They sold our home in nine days, above asking."
+#    name: "A. and B. Client"
+#    detail: "Seller, Laguna Beach"
+[]

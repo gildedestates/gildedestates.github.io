@@ -1,0 +1,3 @@
+# Options for the filter bar on /listings/. Edit freely; no code changes needed.
+beds: [1, 2, 3, 4, 5]
+price_max: [1000000, 2000000, 3000000, 5000000, 10000000]

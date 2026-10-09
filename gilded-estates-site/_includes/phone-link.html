@@ -1,0 +1,3 @@
+{%- comment -%} Param: number, e.g. "(949) 555-0100". Renders a tap-to-call link. {%- endcomment -%}
+{%- assign phone_digits = include.number | remove: "(" | remove: ")" | remove: " " | remove: "-" | remove: "." -%}
+<a href="tel:{% unless phone_digits contains '+' %}+1{% endunless %}{{ phone_digits }}">{{ include.number }}</a>

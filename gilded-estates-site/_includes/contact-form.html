@@ -1,0 +1,59 @@
+{%- comment -%}
+  Contact form posted to Formspree (set `formspree_id` in _config.yml).
+  assets/js/main.js upgrades it to an in-page submit and reads two optional
+  query params so other pages can deep-link here:
+    /contact/?agent=jordan-ellis&topic=1234%20Placeholder%20Lane
+{%- endcomment -%}
+{%- assign form_agents = site.agents | sort: "order" -%}
+{%- if site.formspree_id == "YOUR_FORM_ID" %}
+<p class="notice">This form isn't connected yet. Set <code>formspree_id</code> in <code>_config.yml</code>.</p>
+{%- endif %}
+<form class="form" data-contact-form action="https://formspree.io/f/{{ site.formspree_id }}" method="POST">
+  <div class="form__row form__row--2">
+    <div class="field">
+      <label for="cf-name">Name</label>
+      <input id="cf-name" name="name" type="text" autocomplete="name" required>
+    </div>
+    <div class="field">
+      <label for="cf-email">Email</label>
+      <input id="cf-email" name="email" type="email" autocomplete="email" required>
+    </div>
+  </div>
+  <div class="form__row form__row--2">
+    <div class="field">
+      <label for="cf-phone">Phone (optional)</label>
+      <input id="cf-phone" name="phone" type="tel" autocomplete="tel">
+    </div>
+    <div class="field">
+      <label for="cf-interest">I'm interested in</label>
+      <select id="cf-interest" name="interest">
+        <option>Buying</option>
+        <option>Selling</option>
+        <option>Buying and selling</option>
+        <option>Something else</option>
+      </select>
+    </div>
+  </div>
+  {%- if form_agents.size > 1 %}
+  <div class="field">
+    <label for="cf-agent">Preferred agent</label>
+    <select id="cf-agent" name="agent">
+      <option value="">No preference</option>
+      {%- for person in form_agents %}
+      <option value="{{ person.slug }}">{{ person.title }}</option>
+      {%- endfor %}
+    </select>
+  </div>
+  {%- endif %}
+  <div class="field">
+    <label for="cf-message">How can we help?</label>
+    <textarea id="cf-message" name="message" rows="5" required></textarea>
+  </div>
+  {%- comment %} Honeypot: real visitors never see or fill this; bots do. {% endcomment %}
+  <input class="visually-hidden" type="text" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true">
+  <input type="hidden" name="_subject" value="New website inquiry: {{ site.title | escape }}">
+  <div>
+    <button class="btn" type="submit">Send message</button>
+  </div>
+  <p class="form__status" role="status" data-form-status></p>
+</form>

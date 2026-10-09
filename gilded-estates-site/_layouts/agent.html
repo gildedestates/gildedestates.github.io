@@ -1,0 +1,49 @@
+---
+layout: default
+---
+{%- comment -%}
+  Individual agent page (collection: _agents).
+  Front matter: title (the agent's name), role, description (one-line summary
+  used for cards + meta description), photo, email, phone, dre, regions,
+  social, order. The body of the file is the bio.
+{%- endcomment -%}
+{%- assign first_name = page.title | split: " " | first -%}
+{%- assign agent_listings = site.listings | where: "agent", page.slug -%}
+<article class="container agent">
+  <nav class="breadcrumb" aria-label="Breadcrumb"><a href="{{ '/agents/' | relative_url }}">Team</a></nav>
+  <div class="agent__grid">
+    <div class="agent__photo">
+      {% include image.html src=page.photo alt=page.title fallback="portrait" eager=true width=800 height=1000 %}
+    </div>
+    <div>
+      <h1>{{ page.title }}</h1>
+      {%- if page.role %}<p class="agent__role">{{ page.role }}</p>{% endif %}
+      <div class="prose">
+        {{ content }}
+      </div>
+      <ul class="agent__contact">
+        {%- if page.phone %}<li>{% include phone-link.html number=page.phone %}</li>{% endif %}
+        {%- if page.email %}<li><a href="mailto:{{ page.email }}">{{ page.email }}</a></li>{% endif %}
+        {%- if page.regions %}<li class="muted">Serving {{ page.regions | join: ", " }}</li>{% endif %}
+        {%- if page.dre %}<li class="muted">California DRE #{{ page.dre }}</li>{% endif %}
+      </ul>
+      {% include social-links.html links=page.social %}
+      <p class="mt-6"><a class="btn" href="{{ '/contact/' | relative_url }}?agent={{ page.slug }}">Contact {{ first_name }}</a></p>
+    </div>
+  </div>
+</article>
+
+{%- if agent_listings.size > 0 %}
+<section class="section">
+  <div class="container">
+    <div class="section-head"><h2>{{ first_name }}'s listings</h2></div>
+    <div class="grid grid--cards">
+      {%- for listing in agent_listings %}
+      {% include listing-card.html listing=listing %}
+      {%- endfor %}
+    </div>
+  </div>
+</section>
+{%- endif %}
+
+{% include schema-person.html %}

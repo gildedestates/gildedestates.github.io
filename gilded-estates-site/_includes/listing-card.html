@@ -1,0 +1,26 @@
+{%- comment -%}
+  Param: listing (a document from site.listings).
+  The data-* attributes feed the filter bar in assets/js/main.js.
+{%- endcomment -%}
+{%- assign lc = include.listing -%}
+{%- assign lc_photo = lc.photos | first -%}
+<article class="card" data-listing data-status="{{ lc.status }}" data-price="{{ lc.price }}" data-beds="{{ lc.beds }}" data-city="{{ lc.city | downcase }}">
+  <a class="card__link" href="{{ lc.url | relative_url }}">
+    <div class="card__media">
+      {% include image.html src=lc_photo alt=lc.title fallback="landscape" width=800 height=640 %}
+      {%- if lc.status and lc.status != "active" %}
+      <span class="badge badge--{{ lc.status }}">{{ lc.status | capitalize }}</span>
+      {%- endif %}
+    </div>
+    <div class="card__body">
+      <p class="card__price">{% if lc.price %}{% include number.html value=lc.price prefix="$" %}{% else %}Price upon request{% endif %}</p>
+      <h3 class="card__title">{{ lc.title }}</h3>
+      <p class="card__meta">{{ lc.city }}, {{ lc.state | default: "CA" }}</p>
+      <ul class="facts-inline">
+        {%- if lc.beds %}<li>{{ lc.beds }} beds</li>{% endif %}
+        {%- if lc.baths %}<li>{{ lc.baths }} baths</li>{% endif %}
+        {%- if lc.sqft %}<li>{% include number.html value=lc.sqft %} sq ft</li>{% endif %}
+      </ul>
+    </div>
+  </a>
+</article>

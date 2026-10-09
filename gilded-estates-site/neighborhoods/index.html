@@ -1,0 +1,17 @@
+---
+layout: page
+title: Neighborhoods
+permalink: /neighborhoods/
+intro: "The places we know best."
+---
+{%- assign regions = site.neighborhoods | group_by: "region" | sort: "name" -%}
+{%- for region in regions %}
+<section class="mt-7">
+  <h2>{{ region.name }}</h2>
+  <div class="grid grid--cards">
+    {%- for hood in region.items %}
+    {% include neighborhood-card.html neighborhood=hood %}
+    {%- endfor %}
+  </div>
+</section>
+{%- endfor %}

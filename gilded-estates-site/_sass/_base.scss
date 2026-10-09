@@ -1,0 +1,70 @@
+// Reset + element defaults. No classes here.
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: var(--color-bg);
+  color: var(--color-ink);
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  font-weight: var(--weight-body);
+  line-height: var(--leading-body);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+// width/height attributes on <img> reserve space (no layout shift);
+// height:auto keeps the ratio when CSS resizes the width.
+img, svg { display: block; max-width: 100%; height: auto; }
+
+h1, h2, h3, h4 {
+  margin: 0 0 var(--space-4);
+  font-family: var(--font-display);
+  font-weight: var(--weight-display);
+  line-height: var(--leading-snug);
+  letter-spacing: var(--tracking-display);
+  text-wrap: balance;
+}
+h1 { font-size: var(--text-3xl); line-height: var(--leading-display); }
+h2 { font-size: var(--text-2xl); }
+h3 { font-size: var(--text-xl); }
+h4 { font-size: var(--text-lg); }
+
+p { margin: 0 0 var(--space-4); }
+
+a {
+  color: inherit;
+  text-decoration-color: var(--color-accent);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.22em;
+  transition: color var(--duration) var(--ease);
+}
+a:hover { color: var(--color-accent); }
+
+ul, ol { margin: 0 0 var(--space-4); padding-left: 1.25rem; }
+address { font-style: normal; }
+hr { border: 0; border-top: 1px solid var(--color-line); margin: var(--space-7) 0; }
+
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 3px;
+}
+
+::selection { background: var(--color-accent); color: var(--color-accent-ink); }
+
+// `hidden` must win over any display value set by a component.
+[hidden] { display: none !important; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
