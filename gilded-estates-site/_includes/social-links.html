@@ -1,8 +1,0 @@
-{%- comment -%} Param: links, a list of { label, url }. Renders nothing if empty. {%- endcomment -%}
-{%- if include.links and include.links.size > 0 -%}
-<ul class="social-links">
-  {%- for link in include.links %}
-  <li><a href="{{ link.url }}" rel="noopener">{{ link.label }}</a></li>
-  {%- endfor %}
-</ul>
-{%- endif -%}
